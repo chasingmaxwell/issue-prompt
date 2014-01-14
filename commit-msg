@@ -21,7 +21,7 @@ while true; do
   fi
 done
 
-# Prompt for resultion status.
+# Prompt for resolution status.
 while true; do
   echo -n "Does your commit resolve this issue? [y or n] "
   read yn
