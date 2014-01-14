@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# Prompt for issue numbers and append to commit messages.
+# If a commit resolves an issue, append "Fixes #{issue number}".
+# Otherwise append "Issue #{issue number}".
+
+exec < /dev/tty
+
+# Prompt for number.
+while true; do
+  echo -n "Please enter the issue number associated with this commit: "
+  read issue
+  if [ -z "$issue" ] ; then
+    echo "No number entered. Your commit message will not reference an issue."
+    exit 0
+  fi
+  if ! [ $issue -eq $issue 2>/dev/null ] ; then
+    echo "Your entry, $issue, was not a number. Please try again."
+  else
+    break
+  fi
+done
+
+# Prompt for resultion status.
+while true; do
+  echo -n "Does your commit resolve this issue? [y or n] "
+  read yn
+  case $yn in
+    [Yy]* ) action="Fixes"; break;; 
+    [Nn]* ) action="Issue"; break;;
+    * ) echo "Please answer 'y' or 'n'.";;
+  esac
+done
+
+# Write issue number to commit message and output success message.
+echo "$action #$issue" >> $1
+echo "'$action #$issue' was successfully appended to your commit message"
+exit 0
+
